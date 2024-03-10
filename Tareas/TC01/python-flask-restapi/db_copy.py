@@ -89,7 +89,7 @@ class Database:
     def update_user(self, request_user):
         cursor = self.conn.cursor()
         cursor.execute(
-            f"UPDATE usuarios SET name = '{request_user['name']}', password = '{request_user['password']}' WHERE user_id = {request_user['id']};"
+            f"UPDATE usuarios SET name = '{request_user['name']}', password = '{request_user['password']}' WHERE user_id = {request_user['user_id']};"
         )
         self.conn.commit()
         cursor.close()

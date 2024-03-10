@@ -28,7 +28,7 @@ class Database:
     def update_task(self, request_task):
         cursor = self.conn.cursor()
         cursor.execute(
-            f"UPDATE tasks SET name = '{request_task['name']}', description = '{request_task['description']}', due_date = '{request_task['due_date']}', status = '{request_task['status']}', usuario_id = '{request_task['usuario_id']}' WHERE usuario_id = {request_task['usuario_id']};"
+            f"UPDATE tasks SET name = '{request_task['name']}', description = '{request_task['description']}', due_date = '{request_task['due_date']}', status = '{request_task['status']}', usuario_id = '{request_task['usuario_id']}' WHERE id = {request_task['id']};"
         )
         self.conn.commit()
         cursor.close()
