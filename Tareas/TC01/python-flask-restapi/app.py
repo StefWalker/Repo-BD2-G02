@@ -20,50 +20,42 @@ appService = AppService(db)
 
 @app.route("/")
 def home():
-    return "App Works!!! juan"
+    return "App Works!!!"
 
 
 @app.route("/api/tasks")
 def tasks():
-    # Obtener el JSON para validar usuario
-    request_data = request.get_json()
-    
-    return appService.get_tasks(request_data)
+    return appService.get_tasks()
 
 
 @app.route("/api/tasks", methods=["POST"])
 def create_task():
-    # Obtener el JSON para validar usuario
     request_data = request.get_json()
-    return appService.create_task(request_data)
+    task = request_data
+    return appService.create_task(task)
 
 
 @app.route("/api/tasks", methods=["PUT"])
 def update_task():
-    # Obtener el JSON para validar usuario
     request_data = request.get_json()
     return appService.update_task(request_data)
 
 
 @app.route("/api/tasks/<int:id>", methods=["DELETE"])
 def delete_task(id):
-    # Obtener el JSON para validar usuario
-    request_data = request.get_json()
-    return appService.delete_task(request_data ,str(id))
+    return appService.delete_task(str(id))
 
-#/////////////////////////////////////////////////////////////////////
-"""
+#/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 @app.route("/api/user")
 def user():
     return appService.get_user()
-
 
 @app.route("/api/user", methods=["POST"])
 def create_user():
     request_data = request.get_json()
     user = request_data
     return appService.create_user(user)
-
 
 @app.route("/api/user", methods=["PUT"])
 def update_user():
@@ -74,4 +66,3 @@ def update_user():
 @app.route("/api/user/<int:id>", methods=["DELETE"])
 def delete_user(id):
     return appService.delete_user(str(id))
-"""

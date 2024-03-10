@@ -18,8 +18,8 @@ class Database:
 
     def update_task(self, request_task):
         cursor = self.conn.cursor()
-        query = "UPDATE tasks SET name = %s, description = %s WHERE id = %s;"
-        values = (request_task["name"], request_task["description"], request_task["id"])
+        query = "UPDATE tasks SET name = %s, description = %s, due_date = %s, status = %s, usuario_id = %s WHERE id = %s;"
+        values = (request_task["name"], request_task["description"], request_task["due_date"], request_task["status"], request_task["usuario_id"], request_task["id"])
         cursor.execute(query, values)
         self.conn.commit()
         cursor.close()
@@ -36,8 +36,8 @@ class Database:
 
     def create_task(self, task):
         cursor = self.conn.cursor()
-        query = "INSERT INTO tasks (name, description) VALUES (%s, %s);"
-        values = (task["name"], task["description"])
+        query = "INSERT INTO tasks (name, description, due_date, status, usuario_id) VALUES (%s, %s, %s, %s, %s);"
+        values = (task["name"], task["description"], task["due_date"], task["status"], task["usuario_id"])
         cursor.execute(query, values)
         self.conn.commit()
         cursor.close()
@@ -46,7 +46,7 @@ class Database:
     def create_task(self, task):
         cursor = self.conn.cursor()
         cursor.execute(
-            f"INSERT INTO tasks (name, description) VALUES ('{task['name']}', '{task['description']}');"
+            f"INSERT INTO tasks (name, description, due_date, status, usuario_id) VALUES ('{task['name']}', '{task['description']}', '{task['due_date']}', '{task['status']}', '{task['usuario_id']}');"
         )
         self.conn.commit()
         cursor.close()
@@ -55,7 +55,7 @@ class Database:
     def update_task(self, request_task):
         cursor = self.conn.cursor()
         cursor.execute(
-            f"UPDATE tasks SET name = '{request_task['name']}', description = '{request_task['description']}' WHERE id = {request_task['id']};"
+            f"UPDATE tasks SET name = '{request_task['name']}', description = '{request_task['description']}', due_date = '{request_task['due_date']}', status = '{request_task['status']}', usuario_id = '{request_task['usuario_id']}' WHERE id = {request_task['id']};"
         )
         self.conn.commit()
         cursor.close()
@@ -67,3 +67,37 @@ class Database:
         self.conn.commit()
         cursor.close()
         return request_task_id
+
+#/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    def get_user(self):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM usuarios;")
+        data = cursor.fetchall()
+        cursor.close()
+        return data
+
+    def create_user(self, user):
+        cursor = self.conn.cursor()
+        cursor.execute(
+            f"INSERT INTO usuarios (name, password) VALUES ('{user['name']}', '{user['password']}');"
+        )
+        self.conn.commit()
+        cursor.close()
+        return user
+
+    def update_user(self, request_user):
+        cursor = self.conn.cursor()
+        cursor.execute(
+            f"UPDATE usuarios SET name = '{request_user['name']}', password = '{request_user['password']}' WHERE user_id = {request_user['id']};"
+        )
+        self.conn.commit()
+        cursor.close()
+        return request_user
+
+    def delete_user(self, request_user_id):
+        cursor = self.conn.cursor()
+        cursor.execute(f"DELETE FROM usuarios WHERE user_id = {request_user_id};")
+        self.conn.commit()
+        cursor.close()
+        return request_user_id

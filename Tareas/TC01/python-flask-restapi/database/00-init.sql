@@ -1,18 +1,19 @@
-CREATE DATABASE tasksDB;
+CREATE DATABASE tasks;
 
-\c tasksDB;
+\c tasks;
 
 CREATE TABLE usuarios (
   user_id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
-  correo TEXT NOT NULL
+  password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE tasks (
-  task_id SERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
   due_date DATE NOT NULL,
-  status BINARY NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES usuarios(user_id)
-);
+  status VARCHAR(255) NOT NULL,
+  usuario_id INT NOT NULL
+  );
+
