@@ -7,7 +7,7 @@ services:
     environment:
       DB_HOST: db
       DB_PORT: 5432
-      DB_NAME: tasks
+      DB_NAME: tareauno
       DB_USER: postgres
       DB_PASSWORD: mysecretpassword
     ports:

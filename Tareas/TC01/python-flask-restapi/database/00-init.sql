@@ -1,6 +1,6 @@
-CREATE DATABASE tasks;
+CREATE DATABASE tareauno;
 
-\c tasks;
+\c tareauno;
 
 CREATE TABLE usuarios (
   user_id SERIAL PRIMARY KEY,

@@ -1,4 +1,4 @@
-\c tasks;
+\c tareauno;
 
 INSERT INTO tasks (name, description, due_date, status, usuario_id) VALUES 
   ('Task 1', 'This is the first task', '2025-01-14', 'completado', 1),

@@ -1,4 +1,4 @@
-\c tasks;
+\c tareauno;
 
 INSERT INTO usuarios (name, password) VALUES 
   ('Pedro', 'P@ssw0rd123!'),
