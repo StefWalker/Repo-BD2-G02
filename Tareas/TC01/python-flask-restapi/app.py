@@ -66,12 +66,8 @@ def create_user():
     
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
     
-    # Aquí deberías validar y almacenar el usuario en tu base de datos
-
-    # Después de registrar el usuario, generas un token JWT
     access_token = create_access_token(identity=username)
 
-    # Devuelves el token JWT junto con un mensaje de éxito
     return jsonify({'message': 'Usuario registrado exitosamente', 'access_token': access_token}), 201
 
 
