@@ -1,4 +1,3 @@
-
 version: '3'
 
 services:
@@ -10,6 +9,7 @@ services:
       DB_NAME: tareauno
       DB_USER: postgres
       DB_PASSWORD: mysecretpassword
+      SECRET_KEY: mysecretkey
     ports:
       - 5002:5000
     networks:
@@ -32,4 +32,3 @@ services:
 networks:
   web:
     driver: bridge
-

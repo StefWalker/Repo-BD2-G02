@@ -1,7 +1,7 @@
 import json
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from db import Database
-
 
 class AppService:
 
@@ -25,7 +25,8 @@ class AppService:
         return request_task_id
 
     def get_user(self):
-        data = self.database.get_user()
+        current_user = get_jwt_identity()
+        data = self.database.get_user(current_user)
         return data
     
     def create_user(self, user):
@@ -33,9 +34,19 @@ class AppService:
         return user
 
     def update_user(self, request_user):
-        self.database.update_user(request_user)
-        return request_user
+        current_user = get_jwt_identity()
+
+        if current_user == request_user['username']:
+            self.database.update_user(request_user)
+            return request_user
+        else:
+            return {'message': 'No tienes permiso para actualizar este usuario'}, 403
 
     def delete_user(self, request_user_id):
-        self.database.delete_user(request_user_id)
-        return request_user_id
+        current_user = get_jwt_identity()
+
+        if current_user == request_user_id:
+            self.database.delete_user(request_user_id)
+            return {'message': 'Usuario eliminado exitosamente'}
+        else:
+            return {'message': 'No tienes permiso para eliminar este usuario'}, 403

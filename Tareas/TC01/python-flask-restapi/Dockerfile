@@ -14,9 +14,12 @@ COPY . .
 RUN pip install poetry
 RUN poetry install
 
+RUN poetry add flask-bcrypt flask-jwt-extended
+
 VOLUME /data_store
 EXPOSE 5000
 
 # Command "python3 -m flask run --host=0.0.0.0"
 CMD ["poetry", "run", "python3", "-m", "flask", "run", "--host=0.0.0.0"]
 
+RUN poetry run python -m venv .venv

@@ -43,3 +43,14 @@ docker rmi flask-restapi
 ``` bash
 docker exec -it python-restapi /bin/sh
 ```
+
+## Autenticacion JWT
+
+Ejecutando el request tipo POST "http://localhost:5002/api/user"
+
+Con body de estructura "{
+    "username":"Erick",
+    "password":"Log1n_P@55"
+}"
+
+Se obtiene el "access_token", el cual se consume en los demas request como Beader Token.
