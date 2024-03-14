@@ -6,15 +6,13 @@ la reproducibilidad y la escalabilidad.
 
 [Link del Api](http://127.0.0.1:5000/api/tasks)
 
-# Commandos 
 # Orquestación con Docker Compose
-## Construye la imagen de docker, contenedor y volumenes necesarios para la ejecucion
 
+Construye la imagen de docker, contenedor y volumenes necesarios para la ejecucion
 ``` bash
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
-
-## En caso de que un fallo con reejecutar el codigo se soluciona
+En caso de que un fallo con reejecutar el codigo se soluciona
 ``` bash example-bad
 docker run -d -p 5000:5000 flask-restapi
 ```
