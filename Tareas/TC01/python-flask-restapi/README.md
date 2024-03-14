@@ -14,7 +14,7 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 En caso de que un fallo con reejecutar el codigo se soluciona
 ``` bash example-bad
-docker run -d -p 5000:5000 flask-restapi
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
 ## Ejecuta un shell dentro del contenedor
