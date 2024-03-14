@@ -17,7 +17,7 @@ En caso de que un fallo con reejecutar el codigo se soluciona
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
-## Ejecuta un shell dentro del contenedor
+## Postman Endpoints
 
 Los se encuentran en este link donde encontrada un archivo tipo json para importar en Postman
 [Archivo postman de EndPoints](https://github.com/StefWalker/Repo-BD2-G02/blob/main/Tareas/TC01/TC01-Endpoints.postman_collection.json)
