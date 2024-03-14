@@ -1,48 +1,27 @@
-# Ejjemplo de uso de Docker con Python/Flask
+# Investigacion Despliegue de Aplicaciones con Docker y PostgreSQL
 
-Example Project on how to develop RESTful API with Flask and Python
-
-El código fue obtenido del siguiente repositorio: [Repositorio](https://github.com/bbachi/python-flask-restapi.git)
+El objetivo de esta tarea es familiarizar a los estudiantes con las prácticas de contenedorización y orquestación de aplicaciones mediante el uso de Docker y Docker Compose. Los estudiantes aprenderán a desplegar
+una aplicación REST API en conjunto con una base de datos PostgreSQL, enfocándose en la automatización,
+la reproducibilidad y la escalabilidad.
 
 [Link del Api](http://127.0.0.1:5000/api/tasks)
 
 # Commandos 
-
-## Construye la imagen de docker
+# Orquestación con Docker Compose
+## Construye la imagen de docker, contenedor y volumenes necesarios para la ejecucion
 
 ``` bash
-docker build -t flask-restapi .
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
-## Corre el contenedor de docker
-``` bash
+## En caso de que un fallo con reejecutar el codigo se soluciona
+``` bash example-bad
 docker run -d -p 5000:5000 flask-restapi
 ```
 
-## Verifica que el contenedor esta corriendo
-``` bash
-docker ps
-```
-
-## Detiene el contenedor
-``` bash
-docker stop <container_id>
-```
-
-## Elimina el contenedor
-``` bash
-docker rm <container_id>
-```
-
-## Elimina la imagen
-``` bash
-docker rmi flask-restapi
-```
-
 ## Ejecuta un shell dentro del contenedor
-``` bash
-docker exec -it python-restapi /bin/sh
-```
+
+Los [EndPoints]([https://link-url-here.org](https://github.com/StefWalker/Repo-BD2-G02/blob/main/Tareas/TC01/TC01-Endpoints.postman_collection.json)) se encuentran en este link donde encontrada un archivo tipo json para importar en Postman
 
 ## Autenticacion JWT
 
