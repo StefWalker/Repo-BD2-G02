@@ -22,7 +22,7 @@ docker run -d -p 5000:5000 flask-restapi
 ## Ejecuta un shell dentro del contenedor
 
 Los se encuentran en este link donde encontrada un archivo tipo json para importar en Postman
-[Archivo postman de EndPoints]([https://link-url-here.org](https://github.com/StefWalker/Repo-BD2-G02/blob/main/Tareas/TC01/TC01-Endpoints.postman_collection.json))
+[Archivo postman de EndPoints](https://github.com/StefWalker/Repo-BD2-G02/blob/main/Tareas/TC01/TC01-Endpoints.postman_collection.json)
 
 ## Autenticacion JWT
 
