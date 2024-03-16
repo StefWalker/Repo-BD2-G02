@@ -1,14 +1,25 @@
 {
 	"info": {
-		"_postman_id": "de38706c-95ce-4d5d-b9a1-706ea3b0da36",
+		"_postman_id": "8934873b-dea4-4c9e-b5a6-6f960f2a1610",
 		"name": "TC01-Endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33501316"
+		"_exporter_id": "27460613",
+		"_collection_link": "https://lunar-water-233445.postman.co/workspace/Labot~754e05e8-72d9-40e8-8ca7-fa7ed81f351e/collection/27460613-8934873b-dea4-4c9e-b5a6-6f960f2a1610?action=share&source=collection_link&creator=27460613"
 	},
 	"item": [
 		{
 			"name": "Tasks - GET",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDU1NjA0NiwianRpIjoiMTBkMjkyZTgtZDE0Ny00ODAwLThjNWUtYmVkYTllZDQ0NDM0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6bnVsbCwibmJmIjoxNzEwNTU2MDQ2LCJjc3JmIjoiYTQ3OTJjMTAtYmQyYi00NDMyLTk4MDMtZTg0MjY3MDA5YjJjIiwiZXhwIjoxNzEwNTU2OTQ2fQ.EpnvfG8sRCLSdnhSGNEglD3WfHG6h4KmrYdLZcJspUI",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -28,6 +39,16 @@
 		{
 			"name": "Tasks - POST",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDU1NjA0NiwianRpIjoiMTBkMjkyZTgtZDE0Ny00ODAwLThjNWUtYmVkYTllZDQ0NDM0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6bnVsbCwibmJmIjoxNzEwNTU2MDQ2LCJjc3JmIjoiYTQ3OTJjMTAtYmQyYi00NDMyLTk4MDMtZTg0MjY3MDA5YjJjIiwiZXhwIjoxNzEwNTU2OTQ2fQ.EpnvfG8sRCLSdnhSGNEglD3WfHG6h4KmrYdLZcJspUI",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -56,6 +77,16 @@
 		{
 			"name": "Tasks - PUT",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDU1NjA0NiwianRpIjoiMTBkMjkyZTgtZDE0Ny00ODAwLThjNWUtYmVkYTllZDQ0NDM0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6bnVsbCwibmJmIjoxNzEwNTU2MDQ2LCJjc3JmIjoiYTQ3OTJjMTAtYmQyYi00NDMyLTk4MDMtZTg0MjY3MDA5YjJjIiwiZXhwIjoxNzEwNTU2OTQ2fQ.EpnvfG8sRCLSdnhSGNEglD3WfHG6h4KmrYdLZcJspUI",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
@@ -84,6 +115,16 @@
 		{
 			"name": "Tasks - DELETE",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDU1NjA0NiwianRpIjoiMTBkMjkyZTgtZDE0Ny00ODAwLThjNWUtYmVkYTllZDQ0NDM0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6bnVsbCwibmJmIjoxNzEwNTU2MDQ2LCJjc3JmIjoiYTQ3OTJjMTAtYmQyYi00NDMyLTk4MDMtZTg0MjY3MDA5YjJjIiwiZXhwIjoxNzEwNTU2OTQ2fQ.EpnvfG8sRCLSdnhSGNEglD3WfHG6h4KmrYdLZcJspUI",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [],
 				"url": {
@@ -104,6 +145,16 @@
 		{
 			"name": "User - GET",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDU1NjA0NiwianRpIjoiMTBkMjkyZTgtZDE0Ny00ODAwLThjNWUtYmVkYTllZDQ0NDM0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6bnVsbCwibmJmIjoxNzEwNTU2MDQ2LCJjc3JmIjoiYTQ3OTJjMTAtYmQyYi00NDMyLTk4MDMtZTg0MjY3MDA5YjJjIiwiZXhwIjoxNzEwNTU2OTQ2fQ.EpnvfG8sRCLSdnhSGNEglD3WfHG6h4KmrYdLZcJspUI",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -121,7 +172,7 @@
 			"response": []
 		},
 		{
-			"name": "User - POST",
+			"name": "Auth User - POST",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -151,6 +202,16 @@
 		{
 			"name": "User - PUT",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDU1NjA0NiwianRpIjoiMTBkMjkyZTgtZDE0Ny00ODAwLThjNWUtYmVkYTllZDQ0NDM0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6bnVsbCwibmJmIjoxNzEwNTU2MDQ2LCJjc3JmIjoiYTQ3OTJjMTAtYmQyYi00NDMyLTk4MDMtZTg0MjY3MDA5YjJjIiwiZXhwIjoxNzEwNTU2OTQ2fQ.EpnvfG8sRCLSdnhSGNEglD3WfHG6h4KmrYdLZcJspUI",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
@@ -179,6 +240,16 @@
 		{
 			"name": "User - DELETE",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDU1NjA0NiwianRpIjoiMTBkMjkyZTgtZDE0Ny00ODAwLThjNWUtYmVkYTllZDQ0NDM0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6bnVsbCwibmJmIjoxNzEwNTU2MDQ2LCJjc3JmIjoiYTQ3OTJjMTAtYmQyYi00NDMyLTk4MDMtZTg0MjY3MDA5YjJjIiwiZXhwIjoxNzEwNTU2OTQ2fQ.EpnvfG8sRCLSdnhSGNEglD3WfHG6h4KmrYdLZcJspUI",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [],
 				"url": {

@@ -74,24 +74,14 @@ def create_user():
 @app.route("/api/user", methods=["PUT"])
 @jwt_required()  
 def update_user():
-    current_user = get_jwt_identity()
     request_data = request.get_json()
-
-    if current_user == request_data.get('username'):
-        return appService.update_user(request_data)
-    else:
-        return {'message': 'No tienes permiso para actualizar este usuario'}, 403
+    return appService.update_user(request_data)
 
 @app.route("/api/user/<int:id>", methods=["DELETE"])
 @jwt_required() 
 def delete_user(id):
-    current_user = get_jwt_identity()
-
-    
-    if current_user == str(id):
-        return appService.delete_user(str(id))
-    else:
-        return {'message': 'No tienes permiso para eliminar este usuario'}, 403
+    return appService.delete_user(id)
 
 if __name__ == "__main__":
     app.run(debug=True)
+
