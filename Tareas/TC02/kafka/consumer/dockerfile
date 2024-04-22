@@ -1,6 +1,6 @@
 FROM python:3.11  
 # Instala dependencias necesarias
-RUN pip install confluent_kafka pymongo  # Incluye confluent_kafka y pymongo
+RUN pip install confluent_kafka pymongo 
 
 # Define el directorio de trabajo
 WORKDIR /app
