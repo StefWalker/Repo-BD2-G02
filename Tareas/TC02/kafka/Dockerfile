@@ -4,7 +4,6 @@ ENV DB_HOST='localhost'
 ENV DB_PORT=8081
 ENV DB_NAME='messageDB'
 ENV ApiPort=5000
-ENV ApiHost='example'
 ENV MONGO_URI='mongodb://root:example@mongo:27017'
 
 
