@@ -96,38 +96,26 @@ def enviar_mensaje(topic, mensaje):
 def consumidor(tema):
     consumer = configurar_consumidor(tema)
     mongoClient= conectar_mongo()
-    mensajes_pendientes = []
+    
     print(consumer)
+    print("\n")
+    print(f"Mensajes anteriores de {tema}:")
+    for document in mongoClient.find({"topic": tema}).sort("timestamp", 1):
+        topic = document.get("topic", "")
+        mensaje = document.get("mensaje", "")
+        timestamp = document.get("timestamp", "")
+        print(f"Topic: {topic}, Mensaje: {mensaje}, Timestamp: {timestamp}")
+        print("\n")
     while True:
         try:
-            print("\n")
-            print(f"Mensajes anteriores de {tema}:")
-            for document in mongoClient.find({"topic": tema}).sort("timestamp", 1):
-                topic = document.get("topic", "")
-                mensaje = document.get("mensaje", "")
-                timestamp = document.get("timestamp", "")
-                print(f"Topic: {topic}, Mensaje: {mensaje}, Timestamp: {timestamp}")
-            print("\n")
             
-            message = consumer.poll(timeout=1.0)
-            break
-            if message.error():
-                if message.error().code() == KafkaError._PARTITION_EOF:
-                    continue
-                else:
-                    print("Error en el mensaje:", message.error())
-                    continue
+            msg= consumer.poll(timeout=1.0)
 
-            key = message.key()
-            value = message.value()
+            if msg is None:
+                continue
 
-            if isinstance(value, bytes):
-                value = value.decode('utf-8')
-
-            #mensaje_json = json.loads(value)
-            #guardar_mensaje_mongo(mensaje_json)
-            #mensajes_pendientes.append(mensaje_json)
-
+            mensaje = msg.value().decode("utf-8")
+            print(f"Nuevo mensaje de {tema}: {mensaje}")
         except KafkaException as ke:
             print("KafkaException:", ke)
         
@@ -179,10 +167,6 @@ def main():
         elif seleccion == 3:
             tema = input("Ingrese el tema a consumir: ")
             consumidor(tema)
-        elif seleccion == 4:
-            mostrar_mensajes_pendientes()
-        elif seleccion == 5:
-            mostrar_mensajes_almacenados()
         else:
             producer.close()
             break
