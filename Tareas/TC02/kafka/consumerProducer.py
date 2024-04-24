@@ -4,6 +4,7 @@ import json
 from pymongo import MongoClient
 from confluent_kafka import Consumer, Producer, KafkaError, KafkaException
 #import os
+import atexit
 
 
 MONGO_URI = "mongodb://root:example@MongoDB:27017"
@@ -12,8 +13,6 @@ MONGO_COLLECTION = "kafkaMensajes"
 BOOTSTRAP_HOST =  "localhost:9092"
 canales_suscritos = []  # Lista de canales suscritos
 mensajes_pendientes = []  # Lista de mensajes pendientes
-
-print(MONGO_URI)
 
 
 def conectar_mongo():
@@ -36,6 +35,10 @@ producer_config = {
 
 # Crea el Producer sin errores
 producer = Producer(producer_config)
+
+def close_producer():
+    producer.flush(10)  # Espera hasta 10 segundos por mensajes pendientes
+
 
 # Produce a message with manual serialization
 def produce_message(topic, key, value):
@@ -61,8 +64,7 @@ def guardar_mensaje_mongo(topic,mensaje):
         "mensaje": mensaje,
         "timestamp": datetime.now(timezone.utc),  
     }
-    coleccion.insert_one(documento)
-    
+    coleccion.insert_one(documento)    
 
 def mostrar_mensajes_almacenados():
     coleccion = conectar_mongo()
@@ -149,9 +151,7 @@ def main():
             "1. Enviar mensaje\n",
             "2. Desuscribirse de un canal\n",
             "3. Consumir mensajes\n",
-            "4. Ver mensajes pendientes\n",
-            "5. Ver mensajes almacenados\n",
-            "6. Salir",
+            "4. Salir",
         )
 
     while True:
@@ -168,6 +168,7 @@ def main():
             tema = input("Ingrese el tema a consumir: ")
             consumidor(tema)
         else:
-            producer.close()
+            close_producer()
             break
 main()
+atexit.register(close_producer)
