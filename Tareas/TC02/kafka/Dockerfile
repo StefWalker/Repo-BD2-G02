@@ -1,22 +1,20 @@
 FROM python:3.11
 
-ENV DB_HOST='localhost'
-ENV DB_PORT=8081
-ENV DB_NAME='messageDB'
-ENV ApiPort=5000
-ENV MONGO_URI='mongodb://root:example@mongo:27017'
+# Instala dependencias necesarias
+RUN pip install confluent_kafka pymongo 
 
-
+# Define el directorio de trabajo
 WORKDIR /opt/app
 
+# Copia todos los archivos del contexto de construcción a la imagen
 COPY . .
 
-RUN pip install poetry
-RUN poetry install
+# Configura las variables de entorno
+ENV MONGO_URI='mongodb://root:example@MongoDB:27017'  
+ENV BOOTSTRAP_HOST='0.0.0.0:9092'  
+ENV DB_NAME='messageDB'  
+ENV MONGO_COLLECTION='kafkaMensajes'  
 
-VOLUME /data_store
-EXPOSE 5000
-
-# Command "python3 -m flask run --host=0.0.0.0"
-CMD ["poetry", "run", "python3", "-m", "flask", "run", "--host=0.0.0.0"]
-
+# Ejecuta el consumidor-productor
+#CMD ["python", "consumerProducer.py"]
+#se debe crear un terminal por aparte 

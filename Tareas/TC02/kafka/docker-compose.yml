@@ -2,32 +2,33 @@ version: '3.8'
 
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: docker.io/bitnami/zookeeper:3.9
     container_name: zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - kafka_kafka_network
     ports:
       - "2181:2181"
-    networks:
-      - kafka_network
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - "zookeeper_data:/bitnami"
 
   kafka:
-    image: confluentinc/cp-kafka:latest
-    container_name: kafka-broker-1
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9092,OUTSIDE://localhost:9093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE  
+    image: docker.io/bitnami/kafka:3.4
+    container_name: Kafka
     ports:
-    - "9092:9092"  
-    - "9093:9093"
+      - "9092:9092"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://Kafka:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
     depends_on:
       - zookeeper
     networks:
-      - kafka_network
+      - kafka_kafka_network
+    volumes:
+      - "kafka_data:/bitnami"
 
   mongo:
     container_name: MongoDB
@@ -36,7 +37,7 @@ services:
     ports:
       - "27017:27017"
     networks:
-      - kafka_network
+      - kafka_kafka_network
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
@@ -48,41 +49,28 @@ services:
     ports:
       - "8081:8081"
     networks:
-      - kafka_network
+      - kafka_kafka_network
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
-
-  api:
-    build:
-      context: .  
-    networks:
-      - kafka_network
-    ports:
-      - "5000:5000"
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: "kafka-broker:9092"
-      MONGO_URI: "mongodb://root:example@mongo:27017"
-    depends_on:
-      - kafka
-      - mongo
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@MongoDB:27017
 
   kafka-consumer:
     build:
-      context: ./consumer  # Ruta al Dockerfile del consumidor
+      context: .
+    container_name: kafkaCP
     networks:
-      - kafka_network
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: "kafka-broker:9092"
-      MONGO_URI: "mongodb://root:example@mongo:27017"
+      - kafka_kafka_network
     depends_on:
       - kafka
-      - mongo
-    stdin_open: true
-    tty: true
-    command: ["python3", "consumer.py"]      
 
+  
 networks:
-  kafka_network:
+  kafka_kafka_network:
     driver: bridge
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
