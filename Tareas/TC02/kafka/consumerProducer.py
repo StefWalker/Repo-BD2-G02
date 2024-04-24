@@ -53,10 +53,11 @@ def configurar_consumidor(tema):
     consumer.subscribe([tema])
     return consumer
 
-def guardar_mensaje_mongo(mensaje):
+def guardar_mensaje_mongo(topic,mensaje):
     # Guardar el mensaje en la colección de MongoDB
     coleccion = conectar_mongo()
     documento = {
+        "topic": topic,
         "mensaje": mensaje,
         "timestamp": datetime.now(timezone.utc),  # Para agregar un tiempo a cada mensaje
     }
@@ -87,7 +88,7 @@ def mostrar_mensajes_pendientes():
 def enviar_mensaje(topic, mensaje):
     try:
         producer.produce(topic, value=mensaje)
-        guardar_mensaje_mongo(mensaje)
+        guardar_mensaje_mongo(topic,mensaje)
         print(f"Mensaje enviado correctamente al tema '{topic}': {mensaje}")
     except Exception as e:
         print(f"Error al enviar mensaje al tema '{topic}': {e}")
