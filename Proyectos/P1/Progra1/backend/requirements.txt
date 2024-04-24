@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pydantic
+motor  # Para trabajar con MongoDB
+asyncpg  # Para trabajar con PostgreSQL
+redis  # Para la integración con Redis
