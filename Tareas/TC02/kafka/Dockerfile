@@ -11,7 +11,7 @@ COPY . .
 
 # Configura las variables de entorno
 ENV MONGO_URI='mongodb://root:example@MongoDB:27017'  
-ENV BOOTSTRAP_HOST='0.0.0.0:9092'  
+ENV BOOTSTRAP_HOST='localhost:9092'  
 ENV DB_NAME='messageDB'  
 ENV MONGO_COLLECTION='kafkaMensajes'  
 

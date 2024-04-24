@@ -1,19 +1,24 @@
-import pymongo
-from confluent_kafka import Consumer, Producer
+from datetime import datetime, timezone
 import json
-import os
+#import pymongo
+from pymongo import MongoClient
+from confluent_kafka import Consumer, Producer, KafkaError, KafkaException
+#import os
 
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://root:example@MongoDB:27017")
-MONGO_DB = os.getenv("DB_NAME", "messageDB")
-MONGO_COLLECTION = os.getenv("MONGO_COLLECTION", "kafkaMensajes")
-BOOTSTRAP_HOST = os.getenv("BOOTSTRAP_HOST", "Kafka:9092")
+
+MONGO_URI = "mongodb://root:example@MongoDB:27017"
+MONGO_DB = "messageDB"
+MONGO_COLLECTION = "kafkaMensajes"
+BOOTSTRAP_HOST =  "localhost:9092"
 canales_suscritos = []  # Lista de canales suscritos
 mensajes_pendientes = []  # Lista de mensajes pendientes
+
+print(MONGO_URI)
 
 
 def conectar_mongo():
     try:
-        client = pymongo.MongoClient(MONGO_URI)
+        client = MongoClient('localhost', 27017, username='root', password='example') #pasarlo a variables de entorno
         db = client[MONGO_DB]
         coleccion = db[MONGO_COLLECTION]
         return coleccion
@@ -25,32 +30,38 @@ def conectar_mongo():
 
 # Configuration for Kafka Producer
 producer_config = {
-    'bootstrap.servers': '172.26.0.5:9092',
+    'bootstrap.servers': 'localhost:9092',
     'client.id': 'mi-productor-app',
 }
 
 # Crea el Producer sin errores
 producer = Producer(producer_config)
-#producer=[]
+
 # Produce a message with manual serialization
 def produce_message(topic, key, value):
     producer.produce(topic, key=key.encode('utf-8'), value=value.encode('utf-8'))
     producer.flush()  # Para asegurarse de que los mensajes se envíen
 
 # Configuration for Kafka Consumer
-consumer_config = {
-    'bootstrap.servers': '172.26.0.5:9092',
-    'group.id': 'mi-grupo-consumidor',
-    'auto.offset.reset': 'earliest',
-}
-
-consumer = Consumer(consumer_config)
-#consumer=[]
+def configurar_consumidor(tema):
+    config = {
+        'bootstrap.servers': 'localhost:9092',  # Cambia a tu servidor Kafka
+        'group.id': 'my-group',
+        'auto.offset.reset': 'earliest',  # Comenzar desde el inicio si es un nuevo grupo
+    }
+    consumer = Consumer(config)
+    consumer.subscribe([tema])
+    return consumer
 
 def guardar_mensaje_mongo(mensaje):
     # Guardar el mensaje en la colección de MongoDB
     coleccion = conectar_mongo()
-    coleccion.insert_one(mensaje)
+    documento = {
+        "mensaje": mensaje,
+        "timestamp": datetime.now(timezone.utc),  # Para agregar un tiempo a cada mensaje
+    }
+    coleccion.insert_one(documento)
+    
 
 def mostrar_mensajes_almacenados():
     coleccion = conectar_mongo()
@@ -66,32 +77,55 @@ def mostrar_mensajes_pendientes():
     else:
         print("No hay mensajes pendientes.")
 
-def crear_topic(topic):
+"""def crear_topic(topic):
     try:
         producer.create_topics(topic, partitions=1, factorOfReplication=1)
         print(f"tema '{topic}' creado correctamente.")
     except Exception as e:
-        print(f"Error al crear el tema '{topic}': {e}")
+        print(f"Error al crear el tema '{topic}': {e}")"""
 
 def enviar_mensaje(topic, mensaje):
     try:
         producer.produce(topic, value=mensaje)
+        guardar_mensaje_mongo(mensaje)
         print(f"Mensaje enviado correctamente al tema '{topic}': {mensaje}")
     except Exception as e:
         print(f"Error al enviar mensaje al tema '{topic}': {e}")
 
-def consumidor():
+def consumidor(tema):
+    consumer = configurar_consumidor(tema)
+    mensajes_pendientes = []
+
     while True:
-        message = consumer.poll(timeout=1.0)
-        if message is None:
-            continue
-        else:
+        try:
+            message = consumer.poll(timeout=1.0)
+
+            if message.error():
+                if message.error().code() == KafkaError._PARTITION_EOF:
+                    continue
+                else:
+                    print("Error en el mensaje:", message.error())
+                    continue
+
             key = message.key()
             value = message.value()
-            mensaje_json = json.loads(value.decode('utf-8'))
+
+            if isinstance(value, bytes):
+                value = value.decode('utf-8')
+
+            mensaje_json = json.loads(value)
             guardar_mensaje_mongo(mensaje_json)
             mensajes_pendientes.append(mensaje_json)
 
+        except KafkaException as ke:
+            print("KafkaException:", ke)
+        
+        except json.JSONDecodeError:
+            print("Error al decodificar el mensaje")
+        
+        except Exception as e:
+            print("Error en el consumidor:", str(e))
+"""
 def suscribirse_canal(canal):
     if canal not in canales_suscritos:
         # Verificar si el topic existe
@@ -101,12 +135,14 @@ def suscribirse_canal(canal):
         canales_suscritos.append(canal)
         consumer.subscribe(canales_suscritos)
         print(f"Suscrito al canal '{canal}'.")
-
+        """
+"""
 def desuscribirse_canal(canal):
     if canal in canales_suscritos:
         canales_suscritos.remove(canal)
         consumer.subscribe(canales_suscritos)
         print(f"Desuscrito del canal '{canal}'.")
+        """
 
 def main():
     print(
@@ -122,17 +158,17 @@ def main():
 
     while True:
         seleccion = int(input("Digite el numero de una opción: "))
-
+        encontrar_topics()
         if seleccion == 1:
             nombre_tema = input("Ingrese el nombre del tema a suscribirse: ")
-            crear_topic(nombre_tema)
+            #crear_topic(nombre_tema)
         elif seleccion == 2:
             tema = input("Ingrese el tema de destino: ")
             mensaje = input("Ingrese el mensaje a enviar: ")
             enviar_mensaje(tema, mensaje)
         elif seleccion==3:
             nombre_tema = input("Ingrese el nombre del tema a desuscribirse: ")
-            desuscribirse_canal(nombre_tema)
+            #desuscribirse_canal(nombre_tema)
         elif seleccion == 4:
             tema = input("Ingrese el tema a consumir: ")
             consumidor(tema)
