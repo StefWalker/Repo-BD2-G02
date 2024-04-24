@@ -149,11 +149,11 @@ def main():
     print(
             "\nMenú Principal:\n",
             "1. Enviar mensaje\n",
-            "3. Desuscribirse de un canal\n",
-            "4. Consumir mensajes\n",
-            "5. Ver mensajes pendientes\n",
-            "6. Ver mensajes almacenados\n",
-            "7. Salir",
+            "2. Desuscribirse de un canal\n",
+            "3. Consumir mensajes\n",
+            "4. Ver mensajes pendientes\n",
+            "5. Ver mensajes almacenados\n",
+            "6. Salir",
         )
 
     while True:
@@ -163,15 +163,15 @@ def main():
             tema = input("Ingrese el tema de destino: ")
             mensaje = input("Ingrese el mensaje a enviar: ")
             enviar_mensaje(tema, mensaje)
-        elif seleccion==3:
+        elif seleccion==2:
             nombre_tema = input("Ingrese el nombre del tema a desuscribirse: ")
             #desuscribirse_canal(nombre_tema)
-        elif seleccion == 4:
+        elif seleccion == 3:
             tema = input("Ingrese el tema a consumir: ")
             consumidor(tema)
-        elif seleccion == 5:
+        elif seleccion == 4:
             mostrar_mensajes_pendientes()
-        elif seleccion == 6:
+        elif seleccion == 5:
             mostrar_mensajes_almacenados()
         else:
             break
