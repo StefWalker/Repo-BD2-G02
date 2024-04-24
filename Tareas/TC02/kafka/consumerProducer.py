@@ -147,8 +147,7 @@ def desuscribirse_canal(canal):
 def main():
     print(
             "\nMenú Principal:\n",
-            "1. Suscribirse a un canal\n",
-            "2. Enviar mensaje\n",
+            "1. Enviar mensaje\n",
             "3. Desuscribirse de un canal\n",
             "4. Consumir mensajes\n",
             "5. Ver mensajes pendientes\n",
@@ -158,11 +157,8 @@ def main():
 
     while True:
         seleccion = int(input("Digite el numero de una opción: "))
-        encontrar_topics()
+        
         if seleccion == 1:
-            nombre_tema = input("Ingrese el nombre del tema a suscribirse: ")
-            #crear_topic(nombre_tema)
-        elif seleccion == 2:
             tema = input("Ingrese el tema de destino: ")
             mensaje = input("Ingrese el mensaje a enviar: ")
             enviar_mensaje(tema, mensaje)
