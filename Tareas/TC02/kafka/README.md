@@ -34,6 +34,9 @@ Apartir de este punto se puede navegar en el menu proporcionado con las opciones
 La 1 permite crear nuevas entradas a su vez estos estaran disponibles para cualquiera que este escuchando 
 La 2 se pone en modo consumidor esperando nuevos mensajes del foro que busco (ctrl+c) para terminar esta terminal
 
+Nota:
+Por motivo de delay el primer consumidor no escucha los timestamps de mongo, la solucion se da con un ejecutar un segundo consumidor
+
 ## Arquitectura
 
 Es una arquitectura estandar de Kafka con un solo zookeeper sin replica y un broker, con n topics que se pueden generar de manera estandar
