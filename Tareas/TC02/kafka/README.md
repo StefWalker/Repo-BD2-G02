@@ -1,45 +1,46 @@
-# Ejjemplo de uso de Docker con Python/Flask
+# Tarea corta 2
 
-Example Project on how to develop RESTful API with Flask and Python
-
-El código fue obtenido del siguiente repositorio: [Repositorio](https://github.com/bbachi/python-flask-restapi.git)
-
-[Link del Api](http://127.0.0.1:5000/api/tasks)
+Luis Felipe Calderón Pérez | 2021048663
+Dylan Stef Torres Walker | 2018135751
+Esteban Morales Ureña | 2018171928
 
 # Commandos 
 
-## Construye la imagen de docker
-
+## Instalar las dependencias
 ``` bash
-docker build -t flask-restapi .
+pip install confluent_kafka pymongo
 ```
 
-## Corre el contenedor de docker
+## Levantar Docker
+
 ``` bash
-docker run -d -p 5000:5000 flask-restapi
+docker-compose build
+docker-compose up
 ```
 
-## Verifica que el contenedor esta corriendo
+## Se ejecuta el comando de Python y se inicia el Foro General
 ``` bash
-docker ps
+consumerProducer.py
+se ingresa el codigo: 612642713
 ```
+Con este codigo se inicia el foro general el cual crea la db y la collecion
+A su vez es lo que mantiene la persistencia de mensajes para foros que no tengan consumidores activos
 
-## Detiene el contenedor
+## Se ejecuta otra instancia de Python en una nueva teminal
 ``` bash
-docker stop <container_id>
+consumerProducer.py
 ```
+Apartir de este punto se puede navegar en el menu proporcionado con las opciones 1 y 2
+La 1 permite crear nuevas entradas a su vez estos estaran disponibles para cualquiera que este escuchando 
+La 2 se pone en modo consumidor esperando nuevos mensajes del foro que busco (ctrl+c) para terminar esta terminal
 
-## Elimina el contenedor
-``` bash
-docker rm <container_id>
-```
+## Arquitectura
 
-## Elimina la imagen
-``` bash
-docker rmi flask-restapi
-```
+Es una arquitectura estandar de Kafka con un solo zookeeper sin replica y un broker, con n topics que se pueden generar de manera estandar
+En cuanto a la arquitectura del cliente de python puede ser tanto consumidor como productor, pero cuando decide ser consumidor se debe crear una nueva terminar para lograr producir mensajes
+A su vez se debe crear una primera instancia de foro general para tener la persistencia de datos enviados por Kafka
 
-## Ejecuta un shell dentro del contenedor
-``` bash
-docker exec -it python-restapi /bin/sh
-```
+## Utilizacion de Kafka y MongoDB
+
+Kafka se utiliza para la generacion de la instacia de produccion y del consumidor
+Mongo se utiliza en el consumidor cuando recibe los mensajes del productor de Kafka
