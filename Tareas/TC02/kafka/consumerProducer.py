@@ -66,27 +66,6 @@ def guardar_mensaje_mongo(topic,mensaje):
     }
     coleccion.insert_one(documento)    
 
-def mostrar_mensajes_almacenados():
-    coleccion = conectar_mongo()
-    mensajes = coleccion.find({})
-    for mensaje in mensajes:
-        print(f"Mensaje almacenado: {mensaje}")
-
-def mostrar_mensajes_pendientes():
-    if mensajes_pendientes:
-        for mensaje in mensajes_pendientes:
-            print(f"Mensaje recibido del canal '{mensaje['canal']}': {mensaje['mensaje']}")
-        mensajes_pendientes.clear()  # Limpiar la lista de mensajes pendientes
-    else:
-        print("No hay mensajes pendientes.")
-
-"""def crear_topic(topic):
-    try:
-        producer.create_topics(topic, partitions=1, factorOfReplication=1)
-        print(f"tema '{topic}' creado correctamente.")
-    except Exception as e:
-        print(f"Error al crear el tema '{topic}': {e}")"""
-
 def enviar_mensaje(topic, mensaje):
     try:
         producer.produce(topic, value=mensaje)
@@ -126,31 +105,12 @@ def consumidor(tema):
         
         except Exception as e:
             print("Error en el consumidor:", str(e))
-"""
-def suscribirse_canal(canal):
-    if canal not in canales_suscritos:
-        # Verificar si el topic existe
-        if not producer.topics_exist([canal]):
-            crear_topic(canal)
-
-        canales_suscritos.append(canal)
-        consumer.subscribe(canales_suscritos)
-        print(f"Suscrito al canal '{canal}'.")
-        """
-"""
-def desuscribirse_canal(canal):
-    if canal in canales_suscritos:
-        canales_suscritos.remove(canal)
-        consumer.subscribe(canales_suscritos)
-        print(f"Desuscrito del canal '{canal}'.")
-        """
 
 def main():
     print(
             "\nMenú Principal:\n",
             "1. Enviar mensaje\n",
-            "2. Desuscribirse de un canal\n",
-            "3. Consumir mensajes\n",
+            "2. Consumir mensajes\n",
             "4. Salir",
         )
 
@@ -161,10 +121,7 @@ def main():
             tema = input("Ingrese el tema de destino: ")
             mensaje = input("Ingrese el mensaje a enviar: ")
             enviar_mensaje(tema, mensaje)
-        elif seleccion==2:
-            nombre_tema = input("Ingrese el nombre del tema a desuscribirse: ")
-            #desuscribirse_canal(nombre_tema)
-        elif seleccion == 3:
+        elif seleccion == 2:
             tema = input("Ingrese el tema a consumir: ")
             consumidor(tema)
         else:
