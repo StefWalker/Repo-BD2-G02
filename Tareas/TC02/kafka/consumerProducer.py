@@ -1,9 +1,7 @@
 from datetime import datetime, timezone
 import json
-#import pymongo
 from pymongo import MongoClient
 from confluent_kafka import Consumer, Producer, KafkaException
-#import os
 import atexit
 
 
@@ -37,11 +35,6 @@ producer = Producer(producer_config)
 def close_producer():
     producer.flush(10)  # Espera hasta 10 segundos por mensajes pendientes
 
-
-# Produce a message with manual serialization
-def produce_message(topic, key, value):
-    producer.produce(topic, key=key.encode('utf-8'), value=value.encode('utf-8'))
-    producer.flush()  # Para asegurarse de que los mensajes se envíen
 
 # Configuration for Kafka Consumer
 def configurar_consumidor(tema):
@@ -134,7 +127,7 @@ def main():
             "\nMenú Principal:\n",
             "1. Enviar mensaje\n",
             "2. Consumir mensajes\n",
-            "4. Salir",
+            "3. Salir",
         )
 
     while True:

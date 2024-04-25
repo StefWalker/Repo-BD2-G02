@@ -54,15 +54,6 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@MongoDB:27017
 
-  kafka-consumer:
-    build:
-      context: .
-    container_name: kafkaCP
-    networks:
-      - kafka_kafka_network
-    depends_on:
-      - kafka
-
 networks:
   kafka_kafka_network:
     driver: bridge
