@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 import json
 #import pymongo
 from pymongo import MongoClient
-from confluent_kafka import Consumer, Producer, KafkaError, KafkaException
+from confluent_kafka import Consumer, Producer, KafkaException
 #import os
 import atexit
 
@@ -11,9 +11,7 @@ MONGO_URI = "mongodb://root:example@MongoDB:27017"
 MONGO_DB = "messageDB"
 MONGO_COLLECTION = "kafkaMensajes"
 BOOTSTRAP_HOST =  "localhost:9092"
-canales_suscritos = []  # Lista de canales suscritos
-mensajes_pendientes = []  # Lista de mensajes pendientes
-
+TOPIC_GENERAL="general"
 
 def conectar_mongo():
     try:
@@ -61,6 +59,7 @@ def guardar_mensaje_mongo(topic,mensaje):
     coleccion = conectar_mongo()
     documento = {
         "topic": topic,
+        "topicGeneral":"general",
         "mensaje": mensaje,
         "timestamp": datetime.now(timezone.utc),  
     }
@@ -68,25 +67,48 @@ def guardar_mensaje_mongo(topic,mensaje):
 
 def enviar_mensaje(topic, mensaje):
     try:
-        producer.produce(topic, value=mensaje)
-        guardar_mensaje_mongo(topic,mensaje)
+        producer.produce(topic, value=mensaje) #produce al foro interno
         print(f"Mensaje enviado correctamente al tema '{topic}': {mensaje}")
     except Exception as e:
         print(f"Error al enviar mensaje al tema '{topic}': {e}")
 
+
+def consumidorGeneral(tema):
+    
+    consumer = configurar_consumidor(tema)
+    
+    while True:
+        try:
+            
+            msg= consumer.poll(timeout=1.0)
+
+            if msg is None:
+                continue
+            mensaje = msg.value().decode("utf-8")
+            guardar_mensaje_mongo(tema,mensaje)
+            print(f"Nuevo mensaje de {tema}: {mensaje}")
+        except KafkaException as ke:
+            print("KafkaException:", ke)
+        
+        except json.JSONDecodeError:
+            print("Error al decodificar el mensaje")
+        
+        except Exception as e:
+            print("Error en el consumidor:", str(e))
+
 def consumidor(tema):
     consumer = configurar_consumidor(tema)
     mongoClient= conectar_mongo()
-    
-    print(consumer)
-    print("\n")
-    print(f"Mensajes anteriores de {tema}:")
-    for document in mongoClient.find({"topic": tema}).sort("timestamp", 1):
-        topic = document.get("topic", "")
-        mensaje = document.get("mensaje", "")
-        timestamp = document.get("timestamp", "")
-        print(f"Topic: {topic}, Mensaje: {mensaje}, Timestamp: {timestamp}")
+    if list(mongoClient.find({"topic": tema})):
         print("\n")
+        print(f"Mensajes anteriores de {tema}:")
+        print
+        for document in mongoClient.find({"topic": tema}).sort("timestamp", 1):
+            topic = document.get("topic", "")
+            mensaje = document.get("mensaje", "")
+            timestamp = document.get("timestamp", "")
+            print(f"Topic: {topic}, Mensaje: {mensaje}, Timestamp: {timestamp}")
+            print("\n")
     while True:
         try:
             
@@ -96,6 +118,7 @@ def consumidor(tema):
                 continue
 
             mensaje = msg.value().decode("utf-8")
+            guardar_mensaje_mongo(tema,mensaje)
             print(f"Nuevo mensaje de {tema}: {mensaje}")
         except KafkaException as ke:
             print("KafkaException:", ke)
@@ -124,6 +147,9 @@ def main():
         elif seleccion == 2:
             tema = input("Ingrese el tema a consumir: ")
             consumidor(tema)
+        elif seleccion==612642713:
+            producer.produce(TOPIC_GENERAL, value="foro general") #produce el foro interno
+            consumidorGeneral(TOPIC_GENERAL)
         else:
             close_producer()
             break
