@@ -1,8 +1,8 @@
 # Tarea corta 2
 
-Luis Felipe Calderón Pérez | 2021048663
-Dylan Stef Torres Walker | 2018135751
-Esteban Morales Ureña | 2018171928
+- Luis Felipe Calderón Pérez | 2021048663
+- Dylan Stef Torres Walker | 2018135751
+- Esteban Morales Ureña | 2018171928
 
 # Commandos 
 
